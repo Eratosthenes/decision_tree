@@ -1,0 +1,58 @@
+decision tree pseudocode
+
+read the file
+create the ArrayList<String> for examples
+create the int[] for attributes
+
+use a dictionary to map attribute_type to words
+use a dictionary to map attribute values to words
+print "Root "
+
+public void dt_Learning(ArrayList<String> examples, int[] attributes, ArrayList<String> default_examples)
+{    
+    if there are positive and negative attributes
+        best_attribute = choose_Attribute(ArrayList<String> examples, int[] attributes)
+        print "{dict(best_attribute)?}"
+        remove that attribute as a choice
+        for each attribute type of best_attribute
+        {   print "\t (attribute_type)"
+            create ArrayList<String> of all examples for that attribute type 
+            do dt_Learning on that set of examples (default_examples will be those examples)
+        }
+        
+    if all examples are positive or negative
+        print "(Yes/No)"
+
+    if there are no examples left
+        choose majority of parent set of examples (the default)
+
+    if there are no attributes left
+        choose majority of the set of examples
+}
+
+// double-check this stuff
+public int choose_Attribute(ArrayList<String> examples, int[] attributes)
+{
+    Y+ = number of positive Y's / number of examples
+    Y- = number of negative Y's / number of examples
+
+    max_attribute = 0
+    for each A in attributes
+    {   
+        for each attribute value a in A
+        {   create list(A=a) 
+            P(A=a)= number of times A is a / |examples|
+            H(Y|A) = H(Y|A) + P(A=a)*H(Y|A=a)
+        } 
+        I(Y;A) = H(Y) - H(Y|A)
+        reset H(Y|A)
+        max_attribute = (I > max_attribute) ? I : max_attribute
+    }
+    return max_attribute
+}    
+
+public double H(ArrayList<String> examples, int Y+, int Y-, int number_of_examples)
+{
+    h = -P(Y+)*lg(P(Y+))-P(Y-)*lg(P(Y-)) 
+    return h 
+}
